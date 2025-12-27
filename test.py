@@ -1,6 +1,7 @@
 import numpy as np
 
 
+
 def simplex(tableau):
     m, n = tableau.shape
 
@@ -11,7 +12,7 @@ def simplex(tableau):
                 ok = 0
 
         if ok == 1:
-            return tableau, "OPTIMAL"
+            return tableau, "optimal"
 
         col = np.argmin(tableau[m - 1, :-1])
 
@@ -21,7 +22,7 @@ def simplex(tableau):
                 borne = 1
 
         if borne == 0:
-            return tableau, "UNBOUNDED"
+            return tableau, "divergent"
 
         ratios = []
         for i in range(m - 1):
@@ -33,7 +34,7 @@ def simplex(tableau):
         row = np.argmin(ratios)
 
         if ratios[row] == np.inf:
-            return tableau, "UNBOUNDED"
+            return tableau, "divergent"
 
         pivot = tableau[row, col]
         tableau[row, :] = tableau[row, :] / pivot
@@ -67,13 +68,13 @@ def phase2(A, b, c):
 
     if abs(tab1[-1, -1]) > 1e-6:
         print("probleme impossible")
-        return None, "INFEASIBLE"
+        return None, "impossible"
 
     m, n = A.shape
 
     tab2 = tab1[:-1, :n]
-    rhs = tab1[:-1, -1].reshape(-1, 1)
-    tab2 = np.hstack([tab2, rhs])
+    bi = tab1[:-1, -1].reshape(-1, 1)
+    tab2 = np.hstack([tab2, bi])
 
     c_row = np.append(c, 0)
     tab2 = np.vstack([tab2, c_row])
@@ -112,7 +113,7 @@ def saisir():
         print("contrainte", i + 1)
         coeffs = list(map(float, input("coeffs : ").split()))
         op = input("op (<= >= =) : ")
-        rhs = float(input("rhs : "))
+        bi = float(input("b : "))
 
         col = [0] * m
         if op == "<=":
@@ -123,7 +124,7 @@ def saisir():
             slack.append(col)
 
         A.append(coeffs)
-        b.append(rhs)
+        b.append(bi)
 
     A = np.array(A)
     b = np.array(b)
