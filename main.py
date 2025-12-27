@@ -91,7 +91,7 @@ def phase2_solve(A, b, c):
     # Vérification faisabilité
     if abs(tableau_p1[-1, -1]) > 1e-6:
         print("PROBLÈME IMPOSSIBLE : Pas de solution réalisable.")
-        return None
+        return None, "INFEASABLE"
 
     print("Solution réalisable trouvée. Passage à la Phase 2.")
 
@@ -230,6 +230,8 @@ if __name__ == "__main__":
         print(f"Vecteur c : {c}")
 
         result, status = phase2_solve(A, b, c)
+        if status == "INFEASIBLE":
+            print("No solution")
 
         if result is not None:
             z_optimal = result[-1, -1]

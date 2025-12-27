@@ -1,7 +1,6 @@
 import numpy as np
 
 
-
 def simplex(tableau):
     m, n = tableau.shape
 
